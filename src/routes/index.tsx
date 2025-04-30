@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-slate-800 text-white">
+      <header className="min-h-screen flex flex-col items-center justify-center bg-slate-50 text-slate-950 dark:text-white dark:bg-slate-800">
         <div className='space-x-5'>
           <button
             onClick={decrement}
