@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Minus, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 import { useCounter } from '@/stores/use-counter'
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/app/home')({
   component: App,
 })
 
@@ -10,8 +11,8 @@ function App() {
   const { count, increment, decrement } = useCounter();
 
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-slate-50 text-slate-950 dark:text-white dark:bg-slate-800">
+    <div className="text-center w-full">
+      <header className="min-h-screen flex flex-col items-center justify-center bg-slate-100 text-slate-950 dark:text-white dark:bg-slate-800">
         <div className='space-x-5'>
           <button
             onClick={decrement}
@@ -27,6 +28,7 @@ function App() {
             <Plus color='#7ccf00'/>
           </button>
         </div>
+        <button onClick={() => toast("Teste de toast")}>teste toast</button>
       </header>
     </div>
   )

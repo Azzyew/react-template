@@ -7,9 +7,9 @@ export default function ThemeSwitch() {
 
   return (
     <div className="flex space-x-1 items-center">
-      <Sun className="dark:text-slate-50"/>
+      <Sun className="dark:text-slate-100"/>
       <Switch onClick={() => setTheme(theme === "dark" ? "light" : "dark")} />
-      <Moon className="dark:text-slate-50"/>
+      <Moon className="dark:text-slate-100"/>
     </div>
   );
 }

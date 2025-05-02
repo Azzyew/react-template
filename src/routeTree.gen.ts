@@ -11,79 +11,106 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
+import { Route as AppImport } from './routes/app'
+import { Route as AppTanstackQueryImport } from './routes/app.tanstack-query'
+import { Route as AppHomeImport } from './routes/app.home'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const AppRoute = AppImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRoute,
+const AppTanstackQueryRoute = AppTanstackQueryImport.update({
+  id: '/tanstack-query',
+  path: '/tanstack-query',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppHomeRoute = AppHomeImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AppRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryImport
-      parentRoute: typeof rootRoute
+    '/app/home': {
+      id: '/app/home'
+      path: '/home'
+      fullPath: '/app/home'
+      preLoaderRoute: typeof AppHomeImport
+      parentRoute: typeof AppImport
+    }
+    '/app/tanstack-query': {
+      id: '/app/tanstack-query'
+      path: '/tanstack-query'
+      fullPath: '/app/tanstack-query'
+      preLoaderRoute: typeof AppTanstackQueryImport
+      parentRoute: typeof AppImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AppRouteChildren {
+  AppHomeRoute: typeof AppHomeRoute
+  AppTanstackQueryRoute: typeof AppTanstackQueryRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppHomeRoute: AppHomeRoute,
+  AppTanstackQueryRoute: AppTanstackQueryRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/app/tanstack-query': typeof AppTanstackQueryRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/app/tanstack-query': typeof AppTanstackQueryRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/home': typeof AppHomeRoute
+  '/app/tanstack-query': typeof AppTanstackQueryRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query'
+  fullPaths: '/app' | '/app/home' | '/app/tanstack-query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/demo/tanstack-query'
+  to: '/app' | '/app/home' | '/app/tanstack-query'
+  id: '__root__' | '/app' | '/app/home' | '/app/tanstack-query'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  AppRoute: AppRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +123,23 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/demo/tanstack-query"
+        "/app"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/app": {
+      "filePath": "app.tsx",
+      "children": [
+        "/app/home",
+        "/app/tanstack-query"
+      ]
     },
-    "/demo/tanstack-query": {
-      "filePath": "demo.tanstack-query.tsx"
+    "/app/home": {
+      "filePath": "app.home.tsx",
+      "parent": "/app"
+    },
+    "/app/tanstack-query": {
+      "filePath": "app.tanstack-query.tsx",
+      "parent": "/app"
     }
   }
 }
